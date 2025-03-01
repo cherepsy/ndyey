@@ -1,0 +1,9 @@
+# MacOS için geçici dosyalar
+.DS_Store
+
+# Windows için geçici dosyalar
+Thumbs.db
+
+# IDE klasörleri (VSCode veya JetBrains gibi)
+.vscode/
+.idea/
