@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>30 gün mala şiirler</title>
+    <title>Günün Şiiri</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @keyframes gradientAnimation {
@@ -13,24 +13,25 @@
         }
 
         body {
-            background: linear-gradient(270deg, #f8d210, #003366); /* Sarı ve lacivert geçişi */
+            background: linear-gradient(270deg, #f8d210, #003366);
             background-size: 400% 400%;
             animation: gradientAnimation 10s ease infinite;
             font-family: 'Arial', sans-serif;
             overflow: hidden;
             position: relative;
+            min-height: 100vh;
         }
 
         .iftar-box {
             position: fixed;
-            top: 20px;
-            left: 20px;
+            top: 10px;
+            left: 10px;
             background-color: rgba(0, 0, 0, 0.6);
             color: #fff;
-            padding: 10px 20px;
-            border-radius: 10px;
-            font-size: 1.5rem;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
             z-index: 10;
             font-weight: bold;
         }
@@ -42,53 +43,102 @@
             min-height: 100vh;
             text-align: center;
             color: #fff;
-            padding: 20px;
+            padding: 1rem;
             z-index: 2;
-            animation: fadeIn 2s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            0% { opacity: 0; transform: translateY(-20px); }
-            100% { opacity: 1; transform: translateY(0); }
         }
 
         .poem-box {
-            max-width: 800px;
-            background: rgba(255, 255, 255, 0.8);
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(10px);
+            max-width: 90%;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
         }
 
         h1 {
-            font-size: 3rem;
+            font-size: 1.5rem;
             font-weight: 700;
-            margin-bottom: 20px;
+            margin-bottom: 1rem;
             color: #ff8c00;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
         }
 
         #poemText {
-            font-size: 2rem;
+            font-size: 1.1rem;
             line-height: 1.6;
-            margin-bottom: 30px;
-            font-weight: 500;
+            margin-bottom: 1rem;
+            font-weight: 400;
             color: #333;
-            white-space: pre-line; /* Satır sonları ve boşlukları düzgün gösterir */
+            white-space: pre-line;
         }
 
         #poemDay {
-            font-size: 1.5rem;
+            font-size: 1rem;
             color: #333;
-            font-weight: 600;
+            font-weight: 500;
         }
 
         #finalMessage {
-            font-size: 2rem;
+            font-size: 1.2rem;
             color: #fff;
             font-weight: bold;
             text-align: center;
+            margin-top: 1rem;
+        }
+
+        /* Mobil cihazlar için medya sorgusu (768px altı) */
+        @media (max-width: 768px) {
+            .iftar-box {
+                font-size: 0.9rem;
+                padding: 0.4rem 0.8rem;
+                top: 5px;
+                left: 5px;
+            }
+
+            .poem-box {
+                padding: 1rem;
+                border-radius: 0.8rem;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            #poemText {
+                font-size: 1rem;
+            }
+
+            #poemDay {
+                font-size: 0.9rem;
+            }
+
+            #finalMessage {
+                font-size: 1rem;
+            }
+        }
+
+        /* Büyük ekranlar için (1024px üzeri) */
+        @media (min-width: 1024px) {
+            .poem-box {
+                max-width: 800px;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            #poemText {
+                font-size: 1.5rem;
+            }
+
+            #poemDay {
+                font-size: 1.2rem;
+            }
+
+            #finalMessage {
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
@@ -100,7 +150,7 @@
 
     <div class="poem-container">
         <div class="poem-box">
-            <h1>Nadiye Hanıma Şiirler</h1>
+            <h1>🌿 Günün Şiiri</h1>
             <p id="poemText">
                 "Yükleniyor..."
             </p>
@@ -116,34 +166,26 @@
         fetch('https://raw.githubusercontent.com/cherepsy/ndyey/main/iftarsaatler.json')
             .then(response => response.json())
             .then(data => {
-                const iftarData = data.iftar_saatleri; // Iftar ve Sahur saatleri verisini alıyoruz
+                const iftarData = data.iftar_saatleri;
                 const today = new Date();
-                const currentDate = today.toISOString().split('T')[0]; // Bugünün tarihini alıyoruz (yyyy-mm-dd formatında)
+                const currentDate = today.toISOString().split('T')[0];
 
-                // Bugünün iftar ve sahur saati verisini buluyoruz
                 const scheduleToday = iftarData.find(item => item.tarih === currentDate);
-
-                // Eğer sahur saati geçmemişse, sahur saati gösterilecek
                 const sahurTime = scheduleToday ? scheduleToday.sahur_saati : '';
                 const iftarTime = scheduleToday ? scheduleToday.iftar_saati : '';
 
-                const currentTime = today.getHours() * 60 + today.getMinutes(); // Şu anki zamanı dakika cinsinden alıyoruz
+                const currentTime = today.getHours() * 60 + today.getMinutes();
                 const sahurTimeInMinutes = parseInt(sahurTime.split(":")[0]) * 60 + parseInt(sahurTime.split(":")[1]);
                 const iftarTimeInMinutes = parseInt(iftarTime.split(":")[0]) * 60 + parseInt(iftarTime.split(":")[1]);
 
-                // Eğer iftar saati geçmişse sahur saati gösterilecek
                 if (currentTime > iftarTimeInMinutes) {
-                    // İftar saati geçmişse, sahur saati göster
                     document.getElementById("iftarSaat").innerHTML = `Sahur Saati: ${sahurTime}`;
                 } else if (currentTime < sahurTimeInMinutes) {
-                    // Eğer sahur saati geçmemişse sahur saati göster
                     document.getElementById("iftarSaat").innerHTML = `Sahur Saati: ${sahurTime}`;
                 } else {
-                    // Eğer sahur saati geçmiş ve iftar saati gelmemişse iftar saati göster
                     document.getElementById("iftarSaat").innerHTML = `İftar Saati: ${iftarTime}`;
                 }
 
-                // Son iftar saatini geçtiyse bir mesaj gösterelim
                 const lastIftar = iftarData[iftarData.length - 1].iftar_saati;
                 if (currentTime > iftarTimeInMinutes && currentDate === iftarData[iftarData.length - 1].tarih) {
                     document.getElementById("finalMessage").textContent = "Bugün son iftar saati geçti, seneye görüşmek üzere!";
@@ -151,6 +193,7 @@
             })
             .catch(error => {
                 console.error('JSON dosyasını yüklerken hata oluştu:', error);
+                document.getElementById("iftarSaat").innerHTML = "Saat bilgisi yüklenemedi.";
             });
 
         // Şiir verilerini JSON dosyasından alıyoruz
@@ -158,21 +201,21 @@
             .then(response => response.json())
             .then(siirler => {
                 const today = new Date();
-                const poemIndex = (today.getDate() - 1) % siirler.length; // Bugün için bir şiir seç (0'dan başlıyor)
+                const poemIndex = (today.getDate() - 1) % siirler.length;
 
                 const siir = siirler[poemIndex];
-                const poemText = siir.sozu.replace(/\n/g, '<br>'); // '\n' yerine <br> ekliyoruz
+                const poemText = siir.sozu.replace(/\n/g, '<br>');
 
                 document.getElementById("poemText").innerHTML = `"${poemText}"`;
-                document.getElementById("poemDay").textContent = `Bugün: Gün ${poemIndex + 1}`;  // Bugünün sırası
+                document.getElementById("poemDay").textContent = `Bugün: Gün ${poemIndex + 1}`;
 
-                // Eğer 30. günse, "Seneye Görüşürüz!" mesajını gösteriyoruz
-                if (poemIndex === 29) { // 30. gün (index 29)
+                if (poemIndex === 29) {
                     document.getElementById("finalMessage").textContent = "Seneye Görüşürüz!";
                 }
             })
             .catch(error => {
                 console.error('JSON dosyasını yüklerken hata oluştu:', error);
+                document.getElementById("poemText").innerHTML = "Şiir yüklenemedi.";
             });
     </script>
 </body>
